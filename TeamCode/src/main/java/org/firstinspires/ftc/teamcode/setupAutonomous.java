@@ -1,0 +1,16 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+@Autonomous(name="setup", group = "testing")
+public class setupAutonomous extends FunctionLibrary {
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        setupHardware();
+        waitForStart();
+        while (opModeIsActive()) {
+            idle();
+        }
+    }
+}
