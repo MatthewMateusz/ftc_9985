@@ -6,10 +6,13 @@ abstract public class FunctionLibrary  extends LinearOpMode {
 
 
     Hardware robot = new Hardware();
-    public void setupHardware() {
+
+    //Setups the hardware for the robot
+    void setupHardware() {
         robot.init(hardwareMap);
     }
 
+    //Waits until the start button is pressed on the phone
     public void waitForStart() {
         while (!isStarted() && !isStopRequested()) {
             idle();

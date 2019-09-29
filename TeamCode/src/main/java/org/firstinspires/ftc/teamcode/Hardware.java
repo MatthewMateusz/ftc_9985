@@ -1,29 +1,38 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class Hardware {
 
+    //Variables to improve readability of code
     public DcMotor.Direction forwardDirection = DcMotor.Direction.FORWARD;
     public DcMotor.Direction reverseDirection = DcMotor.Direction.REVERSE;
 
     public DcMotor.ZeroPowerBehavior brakeZero = DcMotor.ZeroPowerBehavior.BRAKE;
     public DcMotor.ZeroPowerBehavior floatZero = DcMotor.ZeroPowerBehavior.FLOAT;
 
-    public double initPosition = 0.5;
+
+    //Default init variables. What servos and other hardware init to
+    public static final double initPosition = 0.5;
 
     //Hardware
+
+    //Motor
     public DcMotor motor_frontLeft = null;
     public DcMotor motor_frontRight = null;
     public DcMotor motor_rearLeft = null;
     public DcMotor motor_rearRight = null;
 
+    //Servo
     public Servo servo_frontLeft = null;
     public Servo servo_frontRight = null;
     public Servo servo_rearLeft = null;
     public Servo servo_rearRight = null;
+
+    //Sesnors
 
     HardwareMap hwMap = null;
 
@@ -55,10 +64,16 @@ public class Hardware {
         return motor;
     }
 
-    public Servo setupServo(HardwareMap hwMap, String phoneName, double position) {
+    private Servo setupServo(HardwareMap hwMap, String phoneName, double position) {
         Servo servo = hwMap.get(Servo.class, phoneName);
         servo.setPosition(position);
         return servo;
 
+    }
+
+    private CRServo setupContinuousServo(HardwareMap hwMap, String phoneName, double speed){
+        CRServo servo = hwMap.crservo.get(phoneName);
+        servo.setPower(speed);
+        return servo;
     }
 }
