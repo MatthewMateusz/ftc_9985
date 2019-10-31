@@ -88,7 +88,7 @@ public class Telop extends OpMode {
 
         robot.servo_frontLeft.setPosition(-.5*gamepad1.right_stick_x+.5);
         robot.servo_rearRight.setPosition(-.5*gamepad1.right_stick_x+.5);
-        robot.servo_frontLeft.setPosition(-.5*gamepad1.right_stick_x+.5);
+        robot.servo_rearLeft.setPosition(-.5*gamepad1.right_stick_x+.5);
         robot.servo_frontRight.setPosition(-.5*gamepad1.right_stick_x+.5);
 
         //Moves front servos

@@ -13,7 +13,7 @@ public class TestAutonomous extends FunctionLibrary {
 
         servo.vertical();
         sleep(5000);
-        motor.encoderDriveDistance(0.5,1000000000,5);
+        motor.encoderDriveDistance(1,1000000000,5);
 
     }
 }
