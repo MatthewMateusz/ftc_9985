@@ -45,8 +45,8 @@ public class Hardware {
 
         motor_frontLeft = setupMotor(hwMap,"motor_frontLeft", forwardDirection, brakeZero);
         motor_frontRight = setupMotor(hwMap,"motor_frontRight", forwardDirection, brakeZero);
-        motor_rearLeft = setupMotor(hwMap,"motor_rearLeft", reverseDirection, brakeZero);
-        motor_rearRight = setupMotor(hwMap,"motor_rearRight", reverseDirection, brakeZero);
+        motor_rearLeft = setupMotor(hwMap,"motor_rearLeft", forwardDirection, brakeZero);
+        motor_rearRight = setupMotor(hwMap,"motor_rearRight", forwardDirection, brakeZero);
 
         servo_frontLeft = setupServo(hwMap, "servo_frontLeft", initPosition);
         servo_frontRight = setupServo(hwMap, "servo_frontRight", initPosition);
