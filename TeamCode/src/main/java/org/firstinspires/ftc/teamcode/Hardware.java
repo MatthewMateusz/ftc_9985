@@ -60,20 +60,20 @@ public class Hardware {
         motor_frontRight = setupMotor(hwMap,"motor_frontRight", forwardDirection, brakeZero);
         motor_rearLeft = setupMotor(hwMap,"motor_rearLeft", forwardDirection, brakeZero);
         motor_rearRight = setupMotor(hwMap,"motor_rearRight", forwardDirection, brakeZero);
-        armMotorRotate = setupMotor(hwMap,"motor_Rotate", forwardDirection, brakeZero);
-        armMotorLift = setupMotor(hwMap,"motor_Lift",forwardDirection,brakeZero);
+        armMotorRotate = setupMotor(hwMap,"armMotorRotate", forwardDirection, brakeZero);
+        armMotorLift = setupMotor(hwMap,"armMotorLift",forwardDirection,brakeZero);
 
         servo_frontLeft = setupServo(hwMap, "servo_frontLeft", initPosition);
         servo_frontRight = setupServo(hwMap, "servo_frontRight", initPosition);
         servo_rearLeft = setupServo(hwMap, "servo_rearLeft", initPosition);
         servo_rearRight = setupServo(hwMap, "servo_rearRight", initPosition);
-        armServoBottom = setupContinuousServo(hwMap,"servo_Bottom",initPosition);
-        armServoTop = setupContinuousServo(hwMap,"servo_Top",initPosition);
+        armServoBottom = setupContinuousServo(hwMap,"armServoTop",initPosition);
+        armServoTop = setupContinuousServo(hwMap,"armServoTop",initPosition);
 
-        armLimitRotateUp = hwMap.get(DigitalChannel.class, "limit_RotateUp");
-        armLimitRotateDown = hwMap.get(DigitalChannel.class,"limit_RotateDown");
-        armLimitLiftUp = hwMap.get(DigitalChannel.class,"limit_LiftUp");
-        armLimitLiftDown = hwMap.get(DigitalChannel.class, "limit_LiftDown");
+        armLimitRotateUp = hwMap.get(DigitalChannel.class, "armLimitRotateUp");
+        armLimitRotateDown = hwMap.get(DigitalChannel.class,"armLimitRotateDown");
+        armLimitLiftUp = hwMap.get(DigitalChannel.class,"armLimitLiftUp");
+        armLimitLiftDown = hwMap.get(DigitalChannel.class, "armLimitLiftDown");
     }
 
     private DcMotor setupMotor(HardwareMap hwMap, String phoneName, DcMotor.Direction motorDirection, DcMotor.ZeroPowerBehavior zeroPower) {
