@@ -19,6 +19,29 @@ abstract public class FunctionLibrary  extends LinearOpMode {
     motorOrientation rearLeft = motorOrientation.forward;
     motorOrientation rearRight = motorOrientation.forward;
 
+
+    //NeveRest 40 Gearbox
+     static final int encoder_tick_per_revolution = 280;
+
+    //3-inch wheel (7.62cm)
+    static final double encoder_cm = encoder_tick_per_revolution / (7.62 * 3.141592653589793);
+
+    //distance variables
+    static final double inch_to_cm = 2.54;
+    static final double one_tile = 24 * inch_to_cm;
+
+    //speed variables
+    public static final double speed_full = 1;
+    public static final double speed_normal = 0.7;
+    public static final double speed_half = 0.5;
+    public static final double speed_slow = 0.3;
+    public static final double speed_death = 0.1;
+
+    //timeout
+    public static final double tShort = 3;
+    public static final double tMedium = 5;
+    public static final double tLong = 10;
+
     private ElapsedTime runtime = new ElapsedTime();
 
     Hardware hardware = new Hardware();
@@ -67,7 +90,7 @@ abstract public class FunctionLibrary  extends LinearOpMode {
 
     class motor {
         public void encoderDriveDistance(double speed, double distance, double timeout) {
-            double encoderDistnace = distance;
+            double encoderDistnace = distance * encoder_cm;
 
             encoderDrive(speed, encoderDistnace, encoderDistnace, encoderDistnace, encoderDistnace, timeout);
         }
@@ -92,22 +115,22 @@ abstract public class FunctionLibrary  extends LinearOpMode {
                 idle();
 
                 //Assign target values
-                newFrontLeftTarget = hardware.motor_frontLeft.getCurrentPosition() + (int) frontLeftEncoderTicks;
-                newFrontRightTarget = hardware.motor_frontRight.getCurrentPosition() + (int) frontRightEncoderTicks;
+                newFrontLeftTarget = hardware.motor_rearLeft.getCurrentPosition() + (int) rearLeftEncoderTicks * 100;
+                newFrontRightTarget = hardware.motor_frontRight.getCurrentPosition() + (int) frontRightEncoderTicks * 100;
                 newRearLeftTarget = hardware.motor_rearLeft.getCurrentPosition() + (int) rearLeftEncoderTicks;
-                newRearRightTarget = hardware.motor_rearRight.getCurrentPosition() + (int) rearRightEncoderTicks;
+                newRearRightTarget = hardware.motor_frontLeft.getCurrentPosition() + (int) frontLeftEncoderTicks * 100;
 
                 //Set the targets
 
 
                 hardware.motor_rearLeft.setTargetPosition(newRearLeftTarget);
-                hardware.motor_frontLeft.setTargetPosition(hardware.motor_rearLeft.getCurrentPosition() + (int) rearLeftEncoderTicks * 100);
+                hardware.motor_frontLeft.setTargetPosition(newFrontLeftTarget);
                 if (rearLeft.equals(motorOrientation.reverse)) {
-                    hardware.motor_rearRight.setTargetPosition(hardware.motor_frontLeft.getCurrentPosition() + (int) frontLeftEncoderTicks * 100);
-                    hardware.motor_frontRight.setTargetPosition(hardware.motor_frontRight.getCurrentPosition() + (int) frontRightEncoderTicks * 100);
+                    hardware.motor_rearRight.setTargetPosition(newRearRightTarget);
+                    hardware.motor_frontRight.setTargetPosition(newFrontRightTarget);
                 } else {
-                    hardware.motor_rearRight.setTargetPosition(hardware.motor_frontLeft.getCurrentPosition() + (int) frontLeftEncoderTicks * -100);
-                    hardware.motor_frontRight.setTargetPosition(hardware.motor_frontRight.getCurrentPosition() + (int) frontRightEncoderTicks * -100);
+                    hardware.motor_rearRight.setTargetPosition(-newRearRightTarget);
+                    hardware.motor_frontRight.setTargetPosition(-newFrontRightTarget);
                 }
 
 
@@ -146,7 +169,17 @@ abstract public class FunctionLibrary  extends LinearOpMode {
                 hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
+        }
+        public void liftArm(double timeout, double speed) {
+            runtime.reset();
+            double power = Math.abs(speed);
+            //set motor to power
 
+            while (opModeIsActive() && runtime.seconds() <= timeout) {
+                idle();
+            }
+
+            //set motor to 0
         }
     }
 }

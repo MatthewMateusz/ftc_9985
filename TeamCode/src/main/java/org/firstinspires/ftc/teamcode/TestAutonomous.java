@@ -12,8 +12,8 @@ public class TestAutonomous extends FunctionLibrary {
         waitForStart();
 
         servo.vertical();
-        sleep(5000);
-        motor.encoderDriveDistance(1,1000000000,5);
+        sleep(1000);
+        motor.encoderDriveDistance(speed_death,2 * one_tile, tLong);
 
     }
 }
