@@ -91,15 +91,32 @@ public class Telop extends OpMode {
         robot.servo_rearLeft.setPosition(-.5*gamepad1.right_stick_x+.5);
         robot.servo_frontRight.setPosition(-.5*gamepad1.right_stick_x+.5);
 
+        if (robot.armLimitLiftUp.getState()!=false && gamepad2.dpad_up)
+            robot.armMotorLift.setPower(.25);
+
+        if (robot.armLimitLiftDown.getState()!=false && gamepad2.dpad_down)
+            robot.armMotorLift.setPower(-.25);
+
+
+        if (gamepad2.left_stick_y > 0 && robot.armLimitRotateUp.getState() != false)
+            robot.armMotorRotate.setPower(gamepad2.left_stick_y);
+
+        if (gamepad2.left_stick_y < 0 && robot.armLimitRotateDown.getState() != false)
+            robot.armMotorRotate.setPower(gamepad2.left_stick_y);
+
+
+
+
+
         //Moves front servos
-        if (gamepad2.dpad_left)
-            servoOffsetH += servoSpeedH;
-        else if (gamepad2.dpad_right)
-            servoOffsetH -= servoSpeedH;
-        if (gamepad2.dpad_up)
-            servoOffsetV += servoSpeedV;
-        else if (gamepad2.dpad_down)
-            servoOffsetV -= servoSpeedV;
+        //if (gamepad2.dpad_left)
+          //  servoOffsetH += servoSpeedH;
+        //else if (gamepad2.dpad_right)
+          //  servoOffsetH -= servoSpeedH;
+        //if (gamepad2.dpad_up)
+          //  servoOffsetV += servoSpeedV;
+        //else if (gamepad2.dpad_down)
+            //servoOffsetV -= servoSpeedV;
 
         // Move both servos to new position.  Assume servos are mirror image of each other.
         servoOffsetH = Range.clip(servoOffsetH, -0.5, 0.5);
