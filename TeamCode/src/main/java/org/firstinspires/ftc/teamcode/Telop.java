@@ -123,17 +123,17 @@ public class Telop extends OpMode {
         //robot.servo_rearLeft.setPosition(-.5*gamepad1.right_stick_x+.5);
         //robot.servo_frontRight.setPosition(-.5*gamepad1.right_stick_x+.5);
 
-        if (robot.armLimitLiftUp.getState()!=false && gamepad2.dpad_up)
+        if (!robot.pressed(robot.armLimitLiftUp) && gamepad2.dpad_up)
             robot.armMotorLift.setPower(.25);
-        else if (robot.armLimitLiftDown.getState()!=false && gamepad2.dpad_down)
+        else if (!robot.pressed(robot.armLimitLiftDown) && gamepad2.dpad_down)
             robot.armMotorLift.setPower(-.1);
         else
             robot.armMotorLift.setPower(0);
 
 
-        if (gamepad2.left_stick_y > 0 && robot.armLimitRotateDown.getState() != false)
+        if (gamepad2.left_stick_y > 0 && !robot.pressed(robot.armLimitRotateDown))
             robot.armMotorRotate.setPower(.25);
-        else if (gamepad2.left_stick_y < 0 && robot.armLimitRotateUp.getState() != false)
+        else if (gamepad2.left_stick_y < 0 && !robot.pressed(robot.armLimitRotateUp))
             robot.armMotorRotate.setPower(-.25);
         else
             robot.armMotorRotate.setPower(0);

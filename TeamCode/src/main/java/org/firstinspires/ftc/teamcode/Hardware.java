@@ -67,8 +67,8 @@ public class Hardware {
         servo_frontRight = setupServo(hwMap, "servo_frontRight", initPosition);
         servo_rearLeft = setupServo(hwMap, "servo_rearLeft", initPosition);
         servo_rearRight = setupServo(hwMap, "servo_rearRight", initPosition);
-        armServoBottom = setupContinuousServo(hwMap,"armServoTop",initPosition);
-        armServoTop = setupContinuousServo(hwMap,"armServoTop",initPosition);
+        armServoBottom = setupContinuousServo(hwMap,"armServoTop",0.03);
+        armServoTop = setupContinuousServo(hwMap,"armServoTop",0.03);
 
         armLimitRotateUp = hwMap.get(DigitalChannel.class, "armLimitRotateUp");
         armLimitRotateDown = hwMap.get(DigitalChannel.class,"armLimitRotateDown");
@@ -96,5 +96,9 @@ public class Hardware {
         CRServo servo = hwMap.crservo.get(phoneName);
         servo.setPower(speed);
         return servo;
+    }
+
+    public boolean pressed(DigitalChannel touchsensor) {
+        return !touchsensor.getState();
     }
 }

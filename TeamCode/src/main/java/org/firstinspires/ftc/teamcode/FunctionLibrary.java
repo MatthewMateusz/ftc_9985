@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -24,7 +25,8 @@ abstract public class FunctionLibrary  extends LinearOpMode {
      static final int encoder_tick_per_revolution = 280;
 
     //3-inch wheel (7.62cm)
-    static final double encoder_cm = encoder_tick_per_revolution / (7.62 * 3.141592653589793);
+    static final double adjust = 4;
+    static final double encoder_cm = (encoder_tick_per_revolution / (7.62 * 3.141592653589793)) * adjust;
 
     //distance variables
     static final double inch_to_cm = 2.54;
@@ -81,9 +83,9 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             hardware.servo_rearLeft.setPosition(0.5);
             hardware.servo_rearRight.setPosition(0.5);
 
-            frontLeft = motorOrientation.forward;
+            frontLeft = motorOrientation.reverse;
             frontRight = motorOrientation.forward;
-            rearLeft = motorOrientation.forward;
+            rearLeft = motorOrientation.reverse;
             rearRight = motorOrientation.forward;
         }
     }
@@ -169,6 +171,7 @@ abstract public class FunctionLibrary  extends LinearOpMode {
                 hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
+
         }
         public void liftArm(double timeout, double speed) {
             runtime.reset();
@@ -180,6 +183,29 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             }
 
             //set motor to 0
+        }
+
+        public void runToHit(DigitalChannel touchsensor, double speed, double timeout) {
+            hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            hardware.motor_frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            runtime.reset();
+            hardware.motor_frontLeft.setPower(speed);
+            hardware.motor_frontRight.setPower(-speed);
+            hardware.motor_rearLeft.setPower(speed);
+            hardware.motor_rearRight.setPower(-speed);
+            while (opModeIsActive() && runtime.seconds() <= timeout && !hardware.pressed(touchsensor)) {
+                idle();
+            }
+            hardware.motor_frontLeft.setPower(0);
+            hardware.motor_frontRight.setPower(0);
+            hardware.motor_rearLeft.setPower(0);
+            hardware.motor_rearRight.setPower(0);
+            hardware.motor_frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 }
