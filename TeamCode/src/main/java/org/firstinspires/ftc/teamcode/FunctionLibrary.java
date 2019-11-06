@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 abstract public class FunctionLibrary  extends LinearOpMode {
 
     //Variables ...
@@ -31,6 +33,7 @@ abstract public class FunctionLibrary  extends LinearOpMode {
     //distance variables
     static final double inch_to_cm = 2.54;
     static final double one_tile = 24 * inch_to_cm;
+    static final long min_delay = 100;
 
     //speed variables
     public static final double speed_full = 1;
@@ -62,6 +65,49 @@ abstract public class FunctionLibrary  extends LinearOpMode {
         }
     }
 
+    public void rotateArmTime(double timeout) {
+        hardware.armMotorRotate.setPower(-speed_half);
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() <= timeout && !hardware.pressed(hardware.armLimitRotateUp)) {
+            idle();
+        }
+        hardware.armMotorRotate.setPower(0);
+        sleep(min_delay);
+    }
+
+    public void liftArmTime (double timeout) {
+        hardware.armMotorLift.setPower(speed_slow);
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() <= timeout && !hardware.pressed(hardware.armLimitLiftUp)) {
+            idle();
+        }
+        hardware.armMotorLift.setPower(0);
+        sleep(min_delay);
+    }
+
+    public void BackUP_stop(double speed, double timeout) {
+        hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hardware.motor_frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        runtime.reset();
+        hardware.motor_frontLeft.setPower(speed);
+        hardware.motor_frontRight.setPower(-speed);
+        hardware.motor_rearLeft.setPower(speed);
+        hardware.motor_rearRight.setPower(-speed);
+        while (opModeIsActive() && runtime.seconds() <= timeout && hardware.backDistance.getDistance(DistanceUnit.CM) > 10) {
+            idle();
+        }
+        hardware.motor_frontLeft.setPower(0);
+        hardware.motor_frontRight.setPower(0);
+        hardware.motor_rearLeft.setPower(0);
+        hardware.motor_rearRight.setPower(0);
+        hardware.motor_frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        sleep(min_delay);
+    }
 
 
     class servo {
@@ -75,6 +121,7 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             frontRight = motorOrientation.reverse;
             rearLeft = motorOrientation.forward;
             rearRight = motorOrientation.reverse;
+            sleep(min_delay * 5);
         }
 
         public void horizontal() {
@@ -87,6 +134,7 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             frontRight = motorOrientation.forward;
             rearLeft = motorOrientation.reverse;
             rearRight = motorOrientation.forward;
+            sleep(min_delay * 5);
         }
     }
 
@@ -95,6 +143,7 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             double encoderDistnace = distance * encoder_cm;
 
             encoderDrive(speed, encoderDistnace, encoderDistnace, encoderDistnace, encoderDistnace, timeout);
+            sleep(min_delay);
         }
 
         public void encoderDrive(double power,
@@ -196,6 +245,8 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             hardware.motor_rearLeft.setPower(speed);
             hardware.motor_rearRight.setPower(-speed);
             while (opModeIsActive() && runtime.seconds() <= timeout && !hardware.pressed(touchsensor)) {
+                telemetry.addData("touchy: ", "%b", touchsensor.getState());
+                telemetry.update();
                 idle();
             }
             hardware.motor_frontLeft.setPower(0);
@@ -206,6 +257,33 @@ abstract public class FunctionLibrary  extends LinearOpMode {
             hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            sleep(min_delay);
+        }
+
+        public void runToUnHit(DigitalChannel touchsensor, double speed, double timeout) {
+            hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            hardware.motor_frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            runtime.reset();
+            hardware.motor_frontLeft.setPower(speed);
+            hardware.motor_frontRight.setPower(-speed);
+            hardware.motor_rearLeft.setPower(speed);
+            hardware.motor_rearRight.setPower(-speed);
+            while (opModeIsActive() && runtime.seconds() <= timeout && hardware.pressed(touchsensor)) {
+                telemetry.addData("touchy: ", "%b", touchsensor.getState());
+                telemetry.update();
+                idle();
+            }
+            hardware.motor_frontLeft.setPower(0);
+            hardware.motor_frontRight.setPower(0);
+            hardware.motor_rearLeft.setPower(0);
+            hardware.motor_rearRight.setPower(0);
+            hardware.motor_frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.motor_frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.motor_rearLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.motor_rearRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            sleep(min_delay);
         }
     }
 }

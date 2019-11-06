@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -47,6 +49,8 @@ public class Hardware {
     public DigitalChannel armLimitLiftUp = null;
     public DigitalChannel armLimitLiftDown = null;
 
+    public Rev2mDistanceSensor backDistance= null;
+
     HardwareMap hwMap = null;
 
     public Hardware() {
@@ -74,6 +78,8 @@ public class Hardware {
         armLimitRotateDown = hwMap.get(DigitalChannel.class,"armLimitRotateDown");
         armLimitLiftUp = hwMap.get(DigitalChannel.class,"armLimitLiftUp");
         armLimitLiftDown = hwMap.get(DigitalChannel.class, "armLimitLiftDown");
+
+        backDistance = (Rev2mDistanceSensor) hwMap.get(DistanceSensor.class, "backDistanceSensor");
     }
 
     private DcMotor setupMotor(HardwareMap hwMap, String phoneName, DcMotor.Direction motorDirection, DcMotor.ZeroPowerBehavior zeroPower) {
