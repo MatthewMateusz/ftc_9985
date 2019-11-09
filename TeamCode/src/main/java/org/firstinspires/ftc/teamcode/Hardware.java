@@ -71,7 +71,7 @@ public class Hardware {
         servo_frontRight = setupServo(hwMap, "servo_frontRight", initPosition);
         servo_rearLeft = setupServo(hwMap, "servo_rearLeft", initPosition);
         servo_rearRight = setupServo(hwMap, "servo_rearRight", initPosition);
-        armServoBottom = setupContinuousServo(hwMap,"armServoTop",0.03);
+        armServoBottom = setupContinuousServo(hwMap,"armServoBottom",0.03);
         armServoTop = setupContinuousServo(hwMap,"armServoTop",0.03);
 
         armLimitRotateUp = hwMap.get(DigitalChannel.class, "armLimitRotateUp");
